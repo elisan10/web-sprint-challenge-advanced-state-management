@@ -1,3 +1,9 @@
+import {
+  SMURF_FETCH_IS_LOADING,
+  SMURF_FETCH_SUCCESSFUL,
+  SMURF_FETCH_FAILED,
+} from "./../actions/index";
+
 export const initialState = {
   smurfs: [
     {
@@ -14,7 +20,26 @@ export const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  console.log("This is state", state);
   switch (action.type) {
+    case SMURF_FETCH_IS_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case SMURF_FETCH_SUCCESSFUL:
+      return {
+        ...state,
+        //not complete yet, need to spread into smurfs and update the initial state
+        smurfs: action.payload,
+        isLoading: false,
+      };
+    case SMURF_FETCH_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
