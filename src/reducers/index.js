@@ -2,8 +2,9 @@ import {
   SMURF_FETCH_IS_LOADING,
   SMURF_FETCH_SUCCESSFUL,
   SMURF_FETCH_FAILED,
-  ADD_SMURF,
-  SET_ERROR_MESSAGE,
+  SMURF_POST_SUCCESSFUL,
+  SMURF_POST_FAILED,
+  SET_FORM_ERROR_MESSAGE,
 } from "./../actions/index";
 
 export const initialState = {
@@ -20,7 +21,6 @@ export const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("This is state", state);
   switch (action.type) {
     case SMURF_FETCH_IS_LOADING:
       return {
@@ -28,7 +28,6 @@ const reducer = (state = initialState, action) => {
         isLoading: true,
       };
     case SMURF_FETCH_SUCCESSFUL:
-      console.log(action.payload);
       return {
         ...state,
         smurfs: action.payload,
@@ -40,20 +39,19 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         errorMessage: action.payload,
       };
-    case ADD_SMURF:
+    case SMURF_POST_SUCCESSFUL:
       return {
         ...state,
-        smurfs: [
-          ...state.smurfs,
-          {
-            name: action.payload.name,
-            nickname: action.payload.nickname,
-            position: action.payload.position,
-            description: action.payload.description,
-          },
-        ],
+        smurfs: action.payload,
+        isLoading: false,
       };
-    case SET_ERROR_MESSAGE:
+    case SMURF_POST_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: action.payload,
+      };
+    case SET_FORM_ERROR_MESSAGE:
       return {
         ...state,
         errorMessage: action.payload,
