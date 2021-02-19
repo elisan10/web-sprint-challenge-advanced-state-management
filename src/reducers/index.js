@@ -2,21 +2,21 @@ import {
   SMURF_FETCH_IS_LOADING,
   SMURF_FETCH_SUCCESSFUL,
   SMURF_FETCH_FAILED,
+  ADD_SMURF,
+  SET_ERROR_MESSAGE,
 } from "./../actions/index";
 
 export const initialState = {
   smurfs: [
     {
-      id: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-      name: "Poppa Smurf",
-      position: "Village Leader",
-      nickname: "Pops",
-      description:
-        "Papa is the practical village leader and the father figure of 100 or so young Smurfs. He is easily identified by his red Smurf hat, pants, and a shortly-trimmed white beard and moustache.",
+      name: "",
+      position: "",
+      nickname: "",
+      description: "",
     },
   ],
   isLoading: false,
-  error: "",
+  errorMessage: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,9 +28,9 @@ const reducer = (state = initialState, action) => {
         isLoading: true,
       };
     case SMURF_FETCH_SUCCESSFUL:
+      console.log(action.payload);
       return {
         ...state,
-        //not complete yet, need to spread into smurfs and update the initial state
         smurfs: action.payload,
         isLoading: false,
       };
@@ -38,7 +38,25 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        errorMessage: action.payload,
+      };
+    case ADD_SMURF:
+      return {
+        ...state,
+        smurfs: [
+          ...state.smurfs,
+          {
+            name: action.payload.name,
+            nickname: action.payload.nickname,
+            position: action.payload.position,
+            description: action.payload.description,
+          },
+        ],
+      };
+    case SET_ERROR_MESSAGE:
+      return {
+        ...state,
+        errorMessage: action.payload,
       };
     default:
       return state;
