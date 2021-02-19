@@ -4,15 +4,16 @@ import { connect } from "react-redux";
 import { addSmurf, setError } from "./../actions/index";
 
 const AddForm = (props) => {
+  // deconstruct props to see what you are working with
   const { errorMessage, addSmurf, setError } = props;
-  // state is equal to the newSmurf
+
+  // state is equal to the newSmurf that you will pass in the addSmurf action
   const [state, setState] = useState({
     name: "",
     position: "",
     nickname: "",
     description: "",
   });
-  console.log("THIS IS STATE IN ADDFORM", state);
 
   const handleChange = (e) => {
     setState({
@@ -20,21 +21,20 @@ const AddForm = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  //2. Replace all instances of the errorMessage static variable with your error message state value.
-  //3. Within the handleSubmit function, replace the static assignment to errorMessage with a call to the setError action. Test that an error is displayed when this validation code fails.
-  //4. Within the handleSubmit function, call your addSmurf action with the smurf name, position, nickname and summury passed as arguments. Test that a smurf is correctly added to when the form is submitted.
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //3. Within the handleSubmit function, replace the static assignment to errorMessage with a call to the setError action. Test that an error is displayed when this validation code fails.
     if (state.name === "" || state.position === "" || state.nickname === "") {
       setError("Name, position and nickname fields are required.");
-      // errorMessage = "Name, position and nickname fields are required.";
+      // errorMessage = "Name, position and nickname fields are required.";   <--- You don't need this
     } else {
+      //4. Within the handleSubmit function, call your addSmurf action with the smurf name, position, nickname and summury passed as arguments. Test that a smurf is correctly added to when the form is submitted.
       return addSmurf(state);
     }
   };
-  console.log("This is ERROR", errorMessage);
-  // const errorMessage = "";
+
+  // const errorMessage = "";  <--- You don't need this variable
 
   return (
     <section>
@@ -80,6 +80,7 @@ const AddForm = (props) => {
             id="description"
           />
         </div>
+        {/* 2. Replace all instances of the errorMessage static variable with your error message state value. */}
         {errorMessage && (
           <div
             data-testid="errorAlert"
@@ -94,9 +95,11 @@ const AddForm = (props) => {
     </section>
   );
 };
+
 //Task List:
 //1. Connect the errorMessage, setError and addSmurf actions to the AddForm component.
 
+//You only need to return the errorMessage from state
 const mapStateToProps = (state) => {
   return {
     errorMessage: state.errorMessage,
